@@ -21,9 +21,9 @@ html, body {
 ::selection { background: var(--fg); color: var(--bg); }
 
 #ascii-canvas {
-  width: min(480px, 80vw);
-  height: min(260px, 40vh);
-  overflow: hidden;
+  width: 100%;
+  flex: 1 1 auto;
+  min-height: 0;
   background: var(--bg);
   white-space: pre;
   font-family: monospace;
@@ -49,8 +49,6 @@ html, body {
   height: 100vh;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
 }
 
 .hero-text {
