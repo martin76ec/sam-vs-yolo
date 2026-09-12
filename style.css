@@ -1,0 +1,275 @@
+@font-face { font-family: 'mono-fallback'; src: local('Courier New'); }
+
+:root {
+  --bg: #0a0a0a;
+  --fg: #e6e6e6;
+  --dim: #7a7a7a;
+  --line: #3a3a3a;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: 'Courier New', 'JetBrains Mono', monospace;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+::selection { background: var(--fg); color: var(--bg); }
+
+#ascii-canvas {
+  width: min(480px, 80vw);
+  height: min(260px, 40vh);
+  overflow: hidden;
+  background: var(--bg);
+  white-space: pre;
+  font-family: monospace;
+  color: var(--fg);
+}
+
+/* AsciiEffect renders into a <table> that never quite tiles the container
+   pixel-for-pixel; force every nested layer to share the page background and
+   zero any default table spacing so the rounding remainder never shows as a seam */
+#ascii-canvas, #ascii-canvas * {
+  background: var(--bg);
+  border: none;
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+#ascii-canvas pre {
+  margin: 0;
+  letter-spacing: -1px;
+}
+
+.hero {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.hero-text {
+  text-align: center;
+  padding: 1.6rem 1rem 0.6rem;
+}
+
+.hero-text h1 {
+  margin: 0;
+  font-size: clamp(1.4rem, 4vw, 2.6rem);
+  letter-spacing: 0.3em;
+}
+
+.hero-text p {
+  margin: 0.5em 0 0;
+  color: var(--dim);
+  letter-spacing: 0.15em;
+}
+
+main {
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 4rem 1.5rem;
+}
+
+section { margin-bottom: 5rem; }
+
+h2 {
+  font-size: 1rem;
+  letter-spacing: 0.25em;
+  color: var(--fg);
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 0.8rem;
+  margin-bottom: 1.5rem;
+}
+
+h2::before { content: "// "; color: var(--dim); }
+
+pre.box {
+  border: 1px solid var(--line);
+  padding: 1.2rem;
+  overflow-x: auto;
+  color: var(--fg);
+}
+
+pre.box .dim { color: var(--dim); }
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+}
+
+th, td {
+  border: 1px solid var(--line);
+  padding: 0.5rem 0.7rem;
+  text-align: left;
+  white-space: nowrap;
+}
+
+th { color: var(--dim); font-weight: normal; letter-spacing: 0.05em; }
+
+tr:hover td { background: #141414; }
+
+.videos {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+
+@media (max-width: 720px) {
+  .videos { grid-template-columns: 1fr; }
+}
+
+.video-block { border: 1px solid var(--line); padding: 1rem; }
+
+.video-block h3 {
+  margin: 0 0 0.8rem;
+  font-size: 0.85rem;
+  letter-spacing: 0.15em;
+  color: var(--dim);
+}
+
+.video-block iframe {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border: 1px solid var(--line);
+  background: #000;
+}
+
+.video-block a {
+  display: inline-block;
+  margin-top: 0.6rem;
+  font-size: 0.8rem;
+}
+
+a {
+  color: var(--fg);
+  text-decoration: none;
+  border-bottom: 1px dotted var(--dim);
+}
+
+a:hover { color: #fff; border-bottom-color: var(--fg); }
+
+.btn-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.btn-row .btn:first-child {
+  grid-column: 1 / -1;
+}
+
+@media (max-width: 720px) {
+  .btn-row { grid-template-columns: 1fr; }
+}
+
+.btn {
+  display: block;
+  border: 1px solid var(--line);
+  padding: 0.8rem 1.2rem;
+  min-width: 0;
+}
+
+.btn .label { color: var(--dim); font-size: 0.75rem; letter-spacing: 0.1em; display: block; margin-bottom: 0.3rem; }
+.btn .value { font-size: 0.95rem; }
+.btn .meta { color: var(--dim); font-size: 0.75rem; }
+
+.note {
+  color: var(--dim);
+  font-size: 0.78rem;
+  margin-top: 1rem;
+  border-left: 2px solid var(--line);
+  padding-left: 0.8rem;
+}
+
+footer {
+  text-align: center;
+  color: var(--dim);
+  font-size: 0.75rem;
+  padding: 2rem 0;
+  border-top: 1px solid var(--line);
+}
+
+/* --- persistent scroll HUD: gives the rest of the page a live readout too --- */
+
+.scanline-sweep {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: -2px;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--fg), transparent);
+  opacity: 0.06;
+  z-index: 41;
+  pointer-events: none;
+  animation: scan-sweep 9s linear infinite;
+}
+
+@keyframes scan-sweep {
+  0% { top: -2px; }
+  100% { top: 100vh; }
+}
+
+.scroll-rail {
+  position: fixed;
+  right: 22px;
+  top: 15vh;
+  height: 70vh;
+  width: 120px;
+  z-index: 60;
+  pointer-events: none;
+}
+
+.rail-track {
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: var(--line);
+}
+
+.rail-fill {
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 1px;
+  height: 0%;
+  background: var(--fg);
+  opacity: 0.6;
+}
+
+.rail-marker {
+  position: absolute;
+  right: -2.5px;
+  top: 0%;
+  width: 6px;
+  height: 6px;
+  border: 1px solid var(--fg);
+  background: var(--bg);
+  transform: translateY(-50%);
+}
+
+.rail-label {
+  position: absolute;
+  right: 14px;
+  top: 0%;
+  transform: translateY(-50%);
+  font-size: 0.68rem;
+  letter-spacing: 0.1em;
+  color: var(--dim);
+  white-space: nowrap;
+  text-align: right;
+}
+
+@media (max-width: 720px) {
+  .scroll-rail {
+    display: none;
+  }
+}

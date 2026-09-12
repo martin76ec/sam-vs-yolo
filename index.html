@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SuperTuxKart // Vision</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="scanline-sweep"></div>
+<div class="scroll-rail">
+  <div class="rail-track"></div>
+  <div class="rail-fill" id="rail-fill"></div>
+  <div class="rail-marker" id="rail-marker"></div>
+  <div class="rail-label" id="rail-label">00/04 · INTRO</div>
+</div>
+
+<div class="hero">
+  <div id="ascii-canvas"></div>
+  <div class="hero-text">
+    <h1>SAM Semantic Segmentation</h1>
+    <p>martin76ec</p>
+  </div>
+</div>
+
+<main>
+
+  <section id="setup">
+    <h2>setup</h2>
+    <pre class="box"><span class="dim">┌──────────────────────────────────────────┐</span>
+  martin@usfq-vision
+  <span class="dim">--------------------</span>
+  OS       <span class="dim">Omarchy 4.0.2-1 (Arch Linux)</span>
+  Kernel   <span class="dim">Linux 7.1.9-arch1-2</span>
+  WM       <span class="dim">Hyprland 0.56.2 (Wayland)</span>
+  CPU      <span class="dim">Intel Core i7-14700KF (16+12) @ 5.60GHz</span>
+  GPU      <span class="dim">NVIDIA GeForce RTX 4060 Ti</span>
+  RAM      <span class="dim">31.15 GiB</span>
+  Disk     <span class="dim">929.50 GiB btrfs</span>
+<span class="dim">└──────────────────────────────────────────┘</span></pre>
+  </section>
+
+  <section id="results">
+    <h2>results</h2>
+    <table>
+      <thead>
+        <tr><th>model</th><th>backbone</th><th>res</th><th>epochs</th><th>pix. acc.</th><th>mIoU</th><th>latency</th><th>fps</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>U-Net (baseline)</td><td>custom</td><td>128²</td><td>15</td><td>~88.0%</td><td>~0.42</td><td>~8.5ms</td><td>~118</td></tr>
+        <tr><td>YOLOv8n transfer</td><td>CSPDarknet</td><td>400²</td><td>5</td><td>92.86%</td><td>0.562</td><td>~1.0ms</td><td>&gt;1000</td></tr>
+        <tr><td>SAM 2.1 transfer</td><td>Hiera-Tiny</td><td>400²</td><td>5</td><td><strong>95.28%</strong></td><td><strong>0.620</strong></td><td>~27.8ms</td><td>~36</td></tr>
+      </tbody>
+    </table>
+    <p class="note">SAM 2.1 wins on fidelity (fine boundaries, small objects); YOLOv8n wins on throughput by ~30x. Full breakdown, per-class IoU and class-imbalance notes in <code>LEARNING.md</code>.</p>
+  </section>
+
+  <section id="demos">
+    <h2>live demos</h2>
+    <div class="videos">
+      <div class="video-block">
+        <h3>SAM 2.1 — live segmentation</h3>
+        <iframe src="https://drive.google.com/file/d/1O-oVkVC7Hh8IiS6l5PSiOXjkwUGSq7ah/preview" allow="autoplay" allowfullscreen></iframe>
+        <a href="https://drive.google.com/file/d/1O-oVkVC7Hh8IiS6l5PSiOXjkwUGSq7ah/view" target="_blank" rel="noopener">open in drive ↗</a>
+      </div>
+      <div class="video-block">
+        <h3>YOLOv8n — live inference</h3>
+        <iframe src="https://drive.google.com/file/d/16ABhkU5t6quJCQavtR4J2Fma0ZiiSFQM/preview" allow="autoplay" allowfullscreen></iframe>
+        <a href="https://drive.google.com/file/d/16ABhkU5t6quJCQavtR4J2Fma0ZiiSFQM/view" target="_blank" rel="noopener">open in drive ↗</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="downloads">
+    <h2>get the code / weights</h2>
+    <div class="btn-row">
+      <a class="btn" href="https://github.com/martin76ec/sam-vs-yolo" target="_blank" rel="noopener">
+        <span class="label">REPOSITORY</span>
+        <span class="value">github.com/martin76ec/sam-vs-yolo</span>
+      </a>
+      <a class="btn" href="https://drive.google.com/file/d/1U-LB4QZPqhVyvbvs7Q7CGZbLZ3ZVws7t/view?usp=sharing" target="_blank" rel="noopener">
+        <span class="label">MODEL</span>
+        <span class="value">model_sam.th</span>
+        <span class="meta">SAM 2.1 Hiera-Tiny · 121 MB · via Drive ↗</span>
+      </a>
+      <a class="btn" href="https://drive.google.com/file/d/15Bse2n--MggGQnwUdPtZiRLYfU1hi349/view?usp=sharing" target="_blank" rel="noopener">
+        <span class="label">MODEL</span>
+        <span class="value">model_yolo.th</span>
+        <span class="meta">YOLOv8n · 6 MB · via Drive ↗</span>
+      </a>
+    </div>
+  </section>
+
+</main>
+
+<footer>built for USFQ Computer Vision · rendered in ASCII, no images harmed</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/effects/AsciiEffect.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
